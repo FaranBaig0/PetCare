@@ -1,0 +1,253 @@
+PETCARE+ APP KNOWLEDGE BASE — CHROMADB REFERENCE DOCUMENT
+==========================================================
+This file contains structured knowledge chunks about the PetCare+ Flutter application.
+Each section is a separate document to be stored as an individual ChromaDB entry.
+Use this for AI-powered customer support (chat) and general navigation assistance.
+
+---
+
+CHUNK 001 | TOPIC: App Overview
+ID: petcare_overview
+---
+PetCare+ is a pet healthcare and management application. It serves three types of users: Clients (pet owners), Doctors (veterinarians), and Admins. The app allows clients to manage their pets, book appointments with veterinarians, shop for pet products in the marketplace, and check their pet's medical history. Doctors can manage their appointments and write prescriptions. Admins have full control over the platform including users, doctors, appointments, products, and orders.
+
+---
+
+CHUNK 002 | TOPIC: Authentication — Login
+ID: auth_login
+---
+The login screen is the entry point of the app after the splash screen. Users enter their email and password to log in. Based on the role returned from the server (Client, Doctor, or Admin), the app automatically navigates to the correct dashboard. Clients go to the Client Dashboard, Doctors go to the Doctor Dashboard, and Admins go to the Admin Dashboard. If login fails, an error message is displayed. The login page is located at the route handled by LoginPage.
+
+---
+
+CHUNK 003 | TOPIC: Authentication — Signup
+ID: auth_signup
+---
+New users can register by going to the signup page from the login screen. They must provide their name, email, phone number, password, and select a role. Available roles are Client, Doctor, and Admin. After successful signup, the user is redirected based on their role. Doctors who sign up are directed to fill out a Doctor Application form with their specialization, license number, experience, and document uploads before they can use the platform.
+
+---
+
+CHUNK 004 | TOPIC: Client Dashboard
+ID: client_dashboard
+---
+The Client Dashboard is the main screen for pet owners. It shows all the user's registered pet profiles in a horizontal scrollable list at the top. Each pet card shows the pet's name, type (Dog, Cat, Bird, etc.), and age. Clicking a pet card opens the Pet Profile page. Below the pet profiles, there is an Appointments View section showing all booked appointments with their status (pending, accepted, or completed). Clients can delete pending appointments. For completed appointments, a View Prescription button appears. There is also a My Orders section showing how many orders the client has placed, which can be tapped to view full order history. At the bottom, two action buttons are available: Add Pet and Book Appointment. The Client Dashboard also has a marketplace icon in the top-right app bar to navigate to the shop. There is a logout button (exit icon) in the app bar. An AI chat FAB (blue robot icon) is available at the bottom-right for customer support, and a green Symptom Checker FAB is available to analyze pet symptoms using AI.
+
+---
+
+CHUNK 005 | TOPIC: Pet Profiles
+ID: pet_profiles
+---
+Clients can view all their registered pets on the Client Dashboard. Each pet profile card shows the pet's photo (if uploaded), name, type, and age. Tapping a pet card opens the Pet Profile Page where the client can edit the pet's name, age, breed, type (Dog, Cat, Bird, Rabbit, Other), gender, weight, and upload a profile picture. From the Pet Profile Page, clients can also access the Pet Medical History which shows all prescriptions and treatment records for that pet. Pets can also be deleted from their profile page.
+
+---
+
+CHUNK 006 | TOPIC: Adding a Pet
+ID: add_pet
+---
+To add a new pet, clients tap the Add Pet button at the bottom of the Client Dashboard. The Add Pet form requires: pet name, pet type (Dog, Cat, Bird, or Other), breed, age (in years), gender (Male or Female), and weight. All fields are required. After successfully adding a pet, the dashboard refreshes and the new pet appears in the pet profiles list. The route for adding a pet is the AddPetPage screen.
+
+---
+
+CHUNK 007 | TOPIC: Appointments — Booking
+ID: book_appointment
+---
+Clients can book a vet appointment by tapping the Book Appointment button on the Client Dashboard. The booking form requires selecting a pet from the client's registered pets, selecting a doctor from the available list, choosing a date, choosing a time, describing the issue or reason for the visit, selecting urgency level (Low, Medium, High), and optionally uploading an image of the issue. After booking, the appointment appears in the Appointments View on the dashboard with a pending status. The path for booking appointments is /dashboard (Book Appointment button).
+
+---
+
+CHUNK 008 | TOPIC: Appointments — Viewing and Managing (Client)
+ID: client_appointments
+---
+Clients can see all their appointments in the Appointments View section of the Client Dashboard. Each appointment card shows the pet name, doctor name, date, time, issue description, and current status. Status can be: pending (orange), accepted (blue), or completed (green). Clients can delete any appointment using the trash icon. When an appointment is marked as completed by the doctor, a View Prescription button appears allowing the client to see the prescription written by the vet.
+
+---
+
+CHUNK 009 | TOPIC: Prescriptions
+ID: prescriptions
+---
+After a doctor marks an appointment as completed, they write a prescription for the pet. Clients can view the prescription from the Appointments View on the Client Dashboard by tapping the View Prescription button on any completed appointment. The prescription page shows the prescription text provided by the doctor. The pet's full medical history (all past prescriptions) can also be viewed from the Pet Profile Page under Pet Medical History.
+
+---
+
+CHUNK 010 | TOPIC: Marketplace — Shopping
+ID: marketplace
+---
+The Marketplace can be accessed from the storefront icon in the top-right of the Client Dashboard app bar, or by navigating to the /marketplace path. It displays all available pet products. Products include categories such as Food, Medicine, Toys, and Accessories. Clients can browse products, tap on a product to view its details, add products to the cart, or use the Buy Now option for immediate checkout. The cart icon in the marketplace shows the current number of items in the cart.
+
+---
+
+CHUNK 011 | TOPIC: Marketplace — Product Details
+ID: product_detail
+---
+Tapping any product in the Marketplace opens the Product Detail Screen. It shows the product image, name, price, and description. Clients can adjust the quantity and see the updated total price. Two actions are available: Add to Cart (saves the item for later checkout) and Buy Now (goes directly to checkout with that item). The cart item count is updated and shown in the marketplace app bar.
+
+---
+
+CHUNK 012 | TOPIC: Marketplace — Cart
+ID: cart
+---
+The Cart Screen shows all items the client has added. Each item displays the product name, price, and quantity controls to increase or decrease the quantity. The total price is calculated automatically. Clients can proceed to checkout from the cart. To access the cart, tap the cart icon in the top-right of the Marketplace screen.
+
+---
+
+CHUNK 013 | TOPIC: Marketplace — Checkout
+ID: checkout
+---
+The Checkout Screen allows clients to place their order. They must enter a delivery address and phone number, and select a payment method (Cash on Delivery is available). The screen shows a subtotal, delivery fee, and grand total. After placing the order, it appears in the My Orders section of the Client Dashboard.
+
+---
+
+CHUNK 014 | TOPIC: My Orders
+ID: my_orders
+---
+Clients can view their order history by tapping the My Orders card on the Client Dashboard. The My Orders screen shows two tabs: Current Orders (Pending, Processing, Shipped) and Order History (Delivered, Cancelled). Clients can reorder from their history. Order status colors are: Pending (orange), Processing (blue), Shipped (purple), Delivered (green), Cancelled (red). Navigate to My Orders from the Client Dashboard by tapping the My Orders card.
+
+---
+
+CHUNK 015 | TOPIC: Doctor Dashboard
+ID: doctor_dashboard
+---
+The Doctor Dashboard is the main screen for veterinarians. It shows the doctor's profile information including name, specialization, license number, experience, and availability. Below that, the doctor's appointments are listed. Each appointment shows the pet name, client name, date, time, issue, and urgency level. Doctors can tap an appointment to open the Appointment Detail screen where they can accept or reject the appointment and write a prescription when the appointment is completed. Doctors can also edit their profile details from the dashboard.
+
+---
+
+CHUNK 016 | TOPIC: Doctor Application
+ID: doctor_application
+---
+When a user signs up with the Doctor role, they are directed to fill out a Doctor Application form. This form requires: specialization, license number, years of experience, a description, a profile photo, a degree/certificate image, and a license image. After submission, the doctor is shown a waiting page indicating their application is under admin review. The doctor cannot access the full Doctor Dashboard until the admin approves their application.
+
+---
+
+CHUNK 017 | TOPIC: Doctor Waiting / Approval
+ID: doctor_waiting
+---
+After a doctor submits their application, they are shown a waiting page that says their application is under review. An hourglass icon is shown. The doctor must wait for the Admin to approve or reject their request from the Admin Dashboard under Doctor Requests. Once approved, they gain access to the Doctor Dashboard.
+
+---
+
+CHUNK 018 | TOPIC: Admin Dashboard
+ID: admin_dashboard
+---
+The Admin Dashboard is the control center of PetCare+. It shows three stat cards at the top: Total Appointments, Total Doctors, and Total Users. Below that, a grid of six management buttons is available: Manage Appointments, Manage Doctors, Manage Users, Manage Products, Doctor Requests, and Manage Orders. The admin can log out using the exit icon in the top-right. An AI customer support chat FAB (blue robot icon) is available at the bottom-right for navigation help.
+
+---
+
+CHUNK 019 | TOPIC: Admin — Manage Appointments
+ID: admin_appointments
+---
+Admins can view all appointments in the system from the Manage Appointments screen. Each appointment shows the pet name, doctor name, client name, date, time, issue, and status. Admins can accept or reject appointments and update their status. Status colors follow the same convention as the client view: pending (orange), accepted (blue), rejected (red), completed (green).
+
+---
+
+CHUNK 020 | TOPIC: Admin — Manage Doctors
+ID: admin_doctors
+---
+The Manage Doctors screen shows all users with the Doctor role. Admins can view doctor details and remove doctors from the platform if needed. This screen is accessed from the Admin Dashboard grid button labeled Manage Doctors.
+
+---
+
+CHUNK 021 | TOPIC: Admin — Manage Users
+ID: admin_users
+---
+The Manage Users screen shows all users with the Client role. Admins can view user details. This screen is accessed from the Admin Dashboard grid button labeled Manage Users.
+
+---
+
+CHUNK 022 | TOPIC: Admin — Doctor Requests
+ID: admin_doctor_requests
+---
+When a doctor submits an application, it appears in the Doctor Requests screen in the Admin Dashboard. Each request shows the doctor's uploaded documents (profile photo, degree image, license image), specialization, license number, and experience. The admin can approve or reject each request. Approving a request grants the doctor full access to the Doctor Dashboard.
+
+---
+
+CHUNK 023 | TOPIC: Admin — Manage Products
+ID: admin_products
+---
+Admins can manage the marketplace inventory from the Manage Products screen. They can view all products, search by name, filter by category (All, Food, Medicine, Toys, Accessories), add new products, edit existing products, and delete products. Products have fields: name, price, description, category, and image. This is accessed from the Admin Dashboard grid button labeled Manage Products.
+
+---
+
+CHUNK 024 | TOPIC: Admin — Manage Orders
+ID: admin_orders
+---
+Admins can view all orders placed by clients from the Manage Orders screen. Each order shows order ID, client details, items ordered, total price, and current status. Admins can update the order status. Status values are: Pending, Processing, Shipped, Delivered, Cancelled. Status colors: Pending (orange), Processing (blue), Shipped (purple), Delivered (green), Cancelled (red). This is accessed from the Admin Dashboard grid button labeled Manage Orders.
+
+---
+
+CHUNK 025 | TOPIC: AI Features — Customer Support Chat
+ID: ai_customer_support
+---
+PetCare+ has a built-in AI customer support chat available on both the Client Dashboard and Admin Dashboard. It is accessible by tapping the blue robot FAB button (labeled Support) at the bottom-right of the screen. The chat uses the /chat API endpoint powered by Groq Llama 3.3. The AI helps users navigate the app by directing them to the correct screen or feature. For example, it can direct users to /marketplace for shopping, /doctors for finding a vet, or /dashboard for managing pets and appointments. The admin version of the chat is aware of admin-specific features like managing users, doctors, and products.
+
+---
+
+CHUNK 026 | TOPIC: AI Features — Symptom Checker
+ID: ai_symptom_checker
+---
+The Symptom Checker is an AI-powered veterinary analysis tool available only on the Client Dashboard. It is accessed by tapping the green health shield FAB button (labeled Symptom Checker) at the bottom-right of the screen. Clients describe their pet's symptoms in plain text (e.g., "My cat is vomiting and not eating for 2 days"). The AI returns a diagnosis text and an urgency level: low (green), medium (orange), or high (red). If urgency is high, a red emergency banner appears advising the client to visit a veterinarian immediately. The symptom checker uses the /predict-symptom API endpoint powered by Groq Llama 3.3.
+
+---
+
+CHUNK 027 | TOPIC: Navigation Paths Summary
+ID: navigation_paths
+---
+Here is a summary of all key navigation paths in PetCare+:
+- /dashboard → Client Dashboard (pet profiles, appointments, orders, add pet, book appointment, AI support, symptom checker)
+- /marketplace → Marketplace (browse and buy pet products, view cart)
+- /doctors → Find and book a vet doctor (accessed via Book Appointment on the dashboard)
+- /cart → Shopping cart (accessed from marketplace top-right icon)
+- /checkout → Place order (accessed from cart or product detail Buy Now)
+- /orders → My Orders (accessed from My Orders card on client dashboard)
+- /pet-profile → Pet Profile and editing (accessed by tapping a pet card on dashboard)
+- /medical-history → Pet Medical History (accessed from Pet Profile page)
+- /prescription → View Prescription (accessed from completed appointment on dashboard)
+- /admin → Admin Dashboard (appointments, doctors, users, products, orders, doctor requests)
+- /doctor-dashboard → Doctor Dashboard (appointments, profile, prescriptions)
+- /doctor-application → Doctor Application form (after doctor signup)
+- /doctor-waiting → Doctor waiting for approval page
+
+---
+
+CHUNK 028 | TOPIC: User Roles and Permissions
+ID: user_roles
+---
+PetCare+ has three user roles:
+1. Client — Can manage pets, book appointments, shop in the marketplace, view prescriptions, use AI symptom checker and support chat.
+2. Doctor — Can view and manage their appointments, write prescriptions, update their profile. Must apply and get approved before accessing the dashboard.
+3. Admin — Has full platform access. Can manage all users, doctors, appointments, products, and orders. Can approve or reject doctor applications. Has access to AI support chat.
+Role is selected during signup and determines which dashboard the user sees after login.
+
+---
+
+CHUNK 029 | TOPIC: Common User Questions and Answers
+ID: faq
+---
+Q: How do I add a pet?
+A: Go to the Client Dashboard and tap the blue Add Pet button at the bottom.
+
+Q: How do I book a vet appointment?
+A: Tap the purple Book Appointment button at the bottom of the Client Dashboard.
+
+Q: Where can I buy food or medicine for my pet?
+A: Tap the store icon in the top-right of the Client Dashboard or navigate to /marketplace.
+
+Q: How do I see my orders?
+A: Tap the My Orders card on the Client Dashboard.
+
+Q: How do I check my pet's symptoms?
+A: Tap the green Symptom Checker FAB button (bottom-right) on the Client Dashboard and describe your pet's symptoms.
+
+Q: How do I view a prescription?
+A: On the Client Dashboard, find the completed appointment in the Appointments View section and tap View Prescription.
+
+Q: How do I see my pet's medical history?
+A: Tap your pet's card on the dashboard to open their profile, then tap Medical History.
+
+Q: How do I contact a doctor?
+A: Book an appointment via the Book Appointment button and select a doctor from the list.
+
+Q: I signed up as a doctor, what do I do next?
+A: Fill out the Doctor Application form with your specialization, license, experience, and documents. Then wait for admin approval.
+
+Q: How do I log out?
+A: Tap the exit/logout icon in the top-right corner of any dashboard.

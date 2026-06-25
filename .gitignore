@@ -1,0 +1,52 @@
+# ====================================================================
+# MASTER GITIGNORE FOR PETCARE+ MULTI-PROJECT STRUCTURE
+# ====================================================================
+
+# --------------------------------------------------------------------
+# 1. Flutter Client (Petcare/Petcare)
+# --------------------------------------------------------------------
+Petcare/Petcare/.dart_tool/
+Petcare/Petcare/.flutter-plugins
+Petcare/Petcare/.flutter-plugins-dependencies
+Petcare/Petcare/build/
+Petcare/Petcare/.pub-cache/
+Petcare/Petcare/.pub/
+Petcare/Petcare/android/app/debug/
+Petcare/Petcare/android/app/profile/
+Petcare/Petcare/android/app/release/
+Petcare/Petcare/kubernetes/
+
+# --------------------------------------------------------------------
+# 2. Node.js Express Server (server/server)
+# --------------------------------------------------------------------
+server/server/node_modules/
+server/server/.env
+server/server/uploads/*
+!server/server/uploads/.gitkeep
+server/server/*.log
+server/server/npm-debug.log*
+
+# --------------------------------------------------------------------
+# 3. Python FastAPI AI Server (petcare-ai)
+# --------------------------------------------------------------------
+petcare-ai/__pycache__/
+petcare-ai/*.py[cod]
+petcare-ai/chroma_db/
+petcare-ai/.env
+petcare-ai/.venv/
+petcare-ai/venv/
+petcare-ai/env/
+petcare-ai/ENV/
+
+# --------------------------------------------------------------------
+# 4. OS and IDE General Files
+# --------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
