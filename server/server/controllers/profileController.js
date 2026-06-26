@@ -12,21 +12,27 @@ exports.updateProfile = async (req, res) => {
             experience_years
         } = req.body;
 
+        const profile_pic = req.file ? req.file.filename : undefined;
+
         await User.update(
             { full_name, phone },
             { where: { user_id } }
         );
 
-        if (req.user.role === 'doctor' && availability) {
-            await Doctor.update(
-                {
-                    availability,
-                    specialization,
-                    license_number,
-                    experience_years
-                },
-                { where: { doctor_id: user_id } }
-            );
+        if (req.user.role === 'doctor') {
+            const doctorUpdateData = {};
+            if (availability !== undefined) doctorUpdateData.availability = availability;
+            if (specialization !== undefined) doctorUpdateData.specialization = specialization;
+            if (license_number !== undefined) doctorUpdateData.license_number = license_number;
+            if (experience_years !== undefined) doctorUpdateData.experience_years = experience_years;
+            if (profile_pic !== undefined) doctorUpdateData.profile_pic = profile_pic;
+
+            if (Object.keys(doctorUpdateData).length > 0) {
+                await Doctor.update(
+                    doctorUpdateData,
+                    { where: { doctor_id: user_id } }
+                );
+            }
         }
 
         res.json({ message: 'Profile updated successfully.' });

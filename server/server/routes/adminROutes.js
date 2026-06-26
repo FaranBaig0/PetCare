@@ -34,6 +34,7 @@ router.delete(
     '/users/:id',
     adminController.deleteUser
   );
+router.put('/users/:id', adminController.updateUser);
 router.get('/logs', adminController.getSystemLogs);
 router.get(
     '/dashboard-stats',
@@ -51,6 +52,14 @@ router.get(
 
 // ── Doctor management ──
 router.get('/doctors', adminController.getAllDoctors);
-router.put('/doctors/:id', adminController.updateDoctor);
+router.put(
+  '/doctors/:id',
+  upload.fields([
+    { name: 'profile_pic', maxCount: 1 },
+    { name: 'degree_pic', maxCount: 1 },
+    { name: 'license_pic', maxCount: 1 }
+  ]),
+  adminController.updateDoctor
+);
 
 module.exports = router;

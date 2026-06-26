@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profileController');
 const { authenticateToken } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 router.use(authenticateToken);
 
@@ -18,6 +19,7 @@ router.get(
 
 router.put(
     '/',
+    upload.single('profile_pic'),
     profileController.updateProfile
 );
 

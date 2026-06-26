@@ -332,6 +332,38 @@ exports.deleteUser = async (req, res) => {
         });
     }
 };
+exports.updateUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { full_name, email, phone } = req.body;
+
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ where: { email } });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Email is already in use.' });
+            }
+        }
+
+        await user.update({
+            full_name: full_name || user.full_name,
+            email: email || user.email,
+            phone: phone || user.phone
+        });
+
+        res.json({
+            message: 'User updated successfully.',
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error updating user.' });
+    }
+};
 exports.getAllAppointments =
 async (req, res) => {
 
@@ -343,7 +375,7 @@ async (req, res) => {
             include: [
                 {
                     model: require('../models').Pet,
-                    attributes: ['pet_name', 'species', 'breed']
+                    attributes: ['pet_name', 'species', 'breed', 'image_url']
                 },
                 {
                     model: require('../models').User,
@@ -354,6 +386,9 @@ async (req, res) => {
                     model: require('../models').User,
                     as: 'client',
                     attributes: ['full_name', 'email', 'phone']
+                },
+                {
+                    model: require('../models').Prescription
                 }
             ],
 
@@ -448,21 +483,44 @@ exports.getAllDoctors = async (req, res) => {
 exports.updateDoctor = async (req, res) => {
     try {
         const doctorId = req.params.id;
-        const { specialization, license_number, experience_years, availability } = req.body;
+        const { name, email, phone, specialization, license_number, experience_years, availability } = req.body;
 
         const doctor = await Doctor.findByPk(doctorId);
         if (!doctor) {
             return res.status(404).json({ message: 'Doctor not found.' });
         }
 
-        await doctor.update({
+        const profile_pic = req.files && req.files['profile_pic'] ? req.files['profile_pic'][0].filename : undefined;
+        const degree_pic = req.files && req.files['degree_pic'] ? req.files['degree_pic'][0].filename : undefined;
+        const license_pic = req.files && req.files['license_pic'] ? req.files['license_pic'][0].filename : undefined;
+
+        const updateData = {
             specialization,
             license_number,
             experience_years,
             availability
+        };
+        if (profile_pic !== undefined) updateData.profile_pic = profile_pic;
+        if (degree_pic !== undefined) updateData.degree_pic = degree_pic;
+        if (license_pic !== undefined) updateData.license_pic = license_pic;
+
+        await doctor.update(updateData);
+
+        const user = await User.findByPk(doctor.doctor_id);
+        if (user) {
+            const userUpdateData = {};
+            if (name !== undefined) userUpdateData.full_name = name;
+            if (email !== undefined) userUpdateData.email = email;
+            if (phone !== undefined) userUpdateData.phone = phone;
+            await user.update(userUpdateData);
+        }
+
+        // Return updated doctor with user details
+        const updatedDoctor = await Doctor.findByPk(doctorId, {
+            include: [{ model: User, as: 'user', attributes: ['full_name', 'email', 'phone'] }]
         });
 
-        res.json({ message: 'Doctor updated successfully.', doctor });
+        res.json({ message: 'Doctor updated successfully.', doctor: updatedDoctor });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error updating doctor.' });
