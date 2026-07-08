@@ -199,13 +199,7 @@ Open the generated `https://` URL on your phone.
 | `end_call` | Client → Server | End the video call |
 | `call_ended` | Server → Client | Notify call has ended |
 
----
 
-## 📸 Screenshots
-
-> _Add screenshots here_
-
----
 
 ## 🤝 Contributing
 
