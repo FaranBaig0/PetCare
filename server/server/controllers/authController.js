@@ -9,7 +9,37 @@ exports.register = async (req, res) => {
     try {
         const { full_name, email, password, phone, role } = req.body;
 
-        const existingUser = await User.findOne({ where: { email } });
+        // ── Validation ────────────────────────────────────────────
+        const nameRegex  = /^[a-zA-Z\s]{2,}$/;
+        const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        const phoneRegex = /^[0-9]{11}$/;
+
+        if (!full_name || !nameRegex.test(full_name.trim())) {
+            return res.status(400).json({
+                message: 'Full name must contain only letters and spaces (min 2 characters).'
+            });
+        }
+
+        if (!email || !emailRegex.test(email.trim())) {
+            return res.status(400).json({
+                message: 'Please provide a valid email address (e.g. user@example.com).'
+            });
+        }
+
+        if (!phone || !phoneRegex.test(phone.trim())) {
+            return res.status(400).json({
+                message: 'Phone number must be exactly 11 digits (numbers only).'
+            });
+        }
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({
+                message: 'Password must be at least 6 characters long.'
+            });
+        }
+        // ─────────────────────────────────────────────────────────
+
+        const existingUser = await User.findOne({ where: { email: email.trim() } });
         if (existingUser) {
             return res.status(400).json({ message: 'Email is already registered.' });
         }
@@ -18,11 +48,11 @@ exports.register = async (req, res) => {
         const password_hash = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
-            full_name,
-            email,
+            full_name: full_name.trim(),
+            email: email.trim(),
             password_hash,
             role: role || 'client',
-            phone,
+            phone: phone.trim(),
             status:
                role === 'doctor'
                   ? 'inactive'

@@ -1,4 +1,4 @@
-const { Product, ProductCategory, User, DoctorRequest, Doctor, SystemLog, Appointment, Prescription,sequelize } = require('../models');
+const { Product, ProductCategory, User, DoctorRequest, Doctor, SystemLog, Appointment, Prescription, sequelize, Pet } = require('../models');
 const Cart = require('../models/Cart');
 const OrderItem = require('../models/OrderItem');
 exports.getAllProducts =
@@ -40,7 +40,7 @@ exports.addProduct = async (req, res) => {
         console.log(req.file);
         const image_url =
         req.file
-        ? `http://localhost:5000/uploads/${req.file.filename}`
+        ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
         : '';
 
         if (category_id) {
@@ -92,7 +92,7 @@ exports.updateProduct = async (req, res) => {
         // IMAGE URL
         const image_url =
         req.file
-        ? `http://localhost:5000/uploads/${req.file.filename}`
+        ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
         : product.image_url;
 
         // UPDATE PRODUCT
@@ -524,5 +524,41 @@ exports.updateDoctor = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error updating doctor.' });
+    }
+};
+
+// GET /api/admin/pets/pending
+exports.getPendingPets = async (req, res) => {
+    try {
+        const pets = await Pet.findAll({
+            where: { status: 'pending' },
+            include: [{ model: User, as: 'owner', attributes: ['full_name', 'email'] }],
+            order: [['created_at', 'ASC']]
+        });
+        res.json(pets);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error fetching pending pets.' });
+    }
+};
+
+// PUT /api/admin/pets/:id/status
+exports.processPetApproval = async (req, res) => {
+    try {
+        const pet_id = req.params.id;
+        const { status } = req.body; // 'approved' or 'rejected'
+
+        if (!['approved', 'rejected'].includes(status)) {
+            return res.status(400).json({ message: 'Invalid status. Must be approved or rejected.' });
+        }
+
+        const pet = await Pet.findByPk(pet_id);
+        if (!pet) return res.status(404).json({ message: 'Pet not found.' });
+
+        await pet.update({ status });
+        res.json({ message: `Pet successfully ${status}!`, pet });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error processing pet approval.' });
     }
 };

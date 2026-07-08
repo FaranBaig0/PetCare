@@ -37,5 +37,6 @@ router.put(
   );               
 router.delete('/:id', petController.deletePet);            
 router.get('/:id/medical-records', petController.getPetMedicalRecords); 
+router.post('/:id/medical-records', petController.createPetMedicalRecord); 
 
 module.exports = router;

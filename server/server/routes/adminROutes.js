@@ -62,4 +62,8 @@ router.put(
   adminController.updateDoctor
 );
 
+// ── Pet approval management ──
+router.get('/pets/pending', adminController.getPendingPets);
+router.put('/pets/:id/status', adminController.processPetApproval);
+
 module.exports = router;

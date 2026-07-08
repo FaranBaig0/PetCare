@@ -15,6 +15,7 @@ const SymptomCheck = require('./SymptomCheck');
 const ChatbotLog = require('./ChatbotLog');
 const SystemLog = require('./SystemLog');
 const Cart = require('./Cart');
+const ChatMessage = require('./ChatMessage');
 
 
 User.hasMany(Pet, { foreignKey: 'owner_id', as: 'pets', onDelete: 'CASCADE' });
@@ -73,6 +74,11 @@ SystemLog.belongsTo(User, { foreignKey: 'admin_id' });
 User.hasMany(DoctorRequest, { foreignKey: 'user_id' });
 DoctorRequest.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
+Appointment.hasMany(ChatMessage, { foreignKey: 'appointment_id', onDelete: 'CASCADE' });
+ChatMessage.belongsTo(Appointment, { foreignKey: 'appointment_id' });
+User.hasMany(ChatMessage, { foreignKey: 'sender_id', as: 'sentMessages' });
+ChatMessage.belongsTo(User, { foreignKey: 'sender_id', as: 'sender' });
+
 
 module.exports = {
     sequelize,
@@ -90,5 +96,6 @@ module.exports = {
     OrderItem,
     SymptomCheck,
     ChatbotLog,
-    SystemLog
+    SystemLog,
+    ChatMessage
 };

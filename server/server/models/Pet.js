@@ -32,6 +32,10 @@ const Pet = sequelize.define('Pet', {
     image_url: {
         type: DataTypes.STRING(255)
     },
+    status: {
+        type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+        defaultValue: 'pending'
+    },
 }, {
     tableName: 'pets',
     timestamps: true,

@@ -6,7 +6,7 @@ exports.createPet = async (req, res) => {
         const { pet_name, species, breed, age, gender, weight } = req.body;
 
         const image_url = req.file
-            ? `http://localhost:5000/uploads/${req.file.filename}`
+            ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
             : null;
 
         const newPet = await Pet.create({
@@ -71,7 +71,7 @@ exports.updatePet = async (req, res) => {
 
         const pet = await Pet.findOne({ where: { pet_id, owner_id } });
         const image_url = req.file
-  ? `http://localhost:5000/uploads/${req.file.filename}`
+  ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
   : pet.image_url;
 
         if (!pet) {
@@ -134,5 +134,31 @@ exports.getPetMedicalRecords = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error fetching medical records.' });
+    }
+};
+
+exports.createPetMedicalRecord = async (req, res) => {
+    try {
+        const pet_id = req.params.id;
+        const owner_id = req.user.user_id;
+        const { diagnosis, treatment, vaccination_details, record_date } = req.body;
+
+        const pet = await Pet.findOne({ where: { pet_id, owner_id } });
+        if (!pet) {
+            return res.status(404).json({ message: 'Pet not found or unauthorized.' });
+        }
+
+        const newRecord = await PetMedicalRecord.create({
+            pet_id,
+            diagnosis,
+            treatment,
+            vaccination_details,
+            record_date: record_date || new Date().toISOString().split('T')[0]
+        });
+
+        res.status(201).json({ message: 'Medical record added successfully!', record: newRecord });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error creating medical record.' });
     }
 };
